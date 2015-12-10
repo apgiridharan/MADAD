@@ -12,20 +12,20 @@ if it exists it will redirect each user to their home page, if it doesn't exist,
     String userid = request.getParameter("uname");    
     String pwd = request.getParameter("pass");
     String type = "";%>
-<sql:query var="result1" dataSource="jdbc/MADAD">
+<sql:query var="result1" dataSource="jdbc/madad">
  SELECT * FROM  annotator WHERE Name= ? and Password= ?    
 <sql:param value="<%=userid%>"/>
       <sql:param value="<%=pwd%>"/>
     </sql:query>
 
-<sql:query var="result2" dataSource="jdbc/MADAD">
+<sql:query var="result2" dataSource="jdbc/madad">
 select Name, Password from manager where Name= ? and Password= ?    
 <sql:param value="<%=userid%>"/>
       <sql:param value="<%=pwd%>"/>
     </sql:query>
 
 
-<sql:query var="result3" dataSource="jdbc/MADAD">
+<sql:query var="result3" dataSource="jdbc/madad">
 select Name, Password from admin where Name= ? and Password= ?    
 <sql:param value="<%=userid%>"/>
       <sql:param value="<%=pwd%>"/>
