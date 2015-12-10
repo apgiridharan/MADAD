@@ -200,6 +200,7 @@
         <%
         }
         %>
+        
         <div id="buttons">
               <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج</button></a>
               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;
