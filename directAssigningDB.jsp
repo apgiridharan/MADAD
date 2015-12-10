@@ -20,7 +20,7 @@
    String D_ID = request.getParameter("D_ID");
    String T_ID = request.getParameter("TT_ID");
    String value = request.getParameter("slider-1");
-   String difficultWords=request.getParameter("diff");
+   String difficultWords=request.getParameter("difficultWords");
    System.out.print("the words are"+difficultWords);
    //to eliminate blank space at both ends
    difficultWords=difficultWords.trim();
