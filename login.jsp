@@ -24,7 +24,6 @@ select Name, Password from manager where Name= ? and Password= ?
       <sql:param value="<%=pwd%>"/>
     </sql:query>
 
-
 <sql:query var="result3" dataSource="jdbc/madad">
 select Name, Password from admin where Name= ? and Password= ?    
 <sql:param value="<%=userid%>"/>
