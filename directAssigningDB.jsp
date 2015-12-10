@@ -20,6 +20,15 @@
    String D_ID = request.getParameter("D_ID");
    String T_ID = request.getParameter("TT_ID");
    String value = request.getParameter("slider-1");
+   String difficultWords=request.getParameter("diff");
+   System.out.print("the words are"+difficultWords);
+   //to eliminate blank space at both ends
+   difficultWords=difficultWords.trim();
+   
+   userID="22";
+   T_ID="1";
+   D_ID="36";
+   
 %>
     <sql:query var="rs" dataSource="jdbc/madad">
         SELECT * FROM assign_value WHERE U_ID ='<%=userID%>'
@@ -27,8 +36,6 @@
         AND D_ID =  '<%=D_ID%>';
     </sql:query>
     <c:choose>
-        
-        <!-- if the user has assigned a value then he changes it, the changes are updated. -->
         <c:when test="${rs.rowCount > 0}">
             <sql:update var="rs2" dataSource="jdbc/madad">
                 UPDATE assign_value 

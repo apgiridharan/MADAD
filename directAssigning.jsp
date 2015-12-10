@@ -173,7 +173,15 @@ else
   <span>
       سهل
       </span>
-  <br>  <br>  <br> <br> 
+  <br>  <br>  <br>
+  <label> الكلمات الصعبة</label>
+  <br>
+  
+        <textarea rows="4" cols="40" name="difficultWords" id="difficultWords">
+        </textarea>
+  <input type="text" name="diff"/>
+  <span>الكلمات مفصولة بفواصل</span>
+  <br><br>
 <label>لقد اخترت</label>
   <input id="rangeValue3" type="text" size="5" style="display: inline" readonly/>
   <script>
