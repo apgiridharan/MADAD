@@ -21,14 +21,8 @@
    String T_ID = request.getParameter("TT_ID");
    String value = request.getParameter("slider-1");
    String difficultWords=request.getParameter("difficultWords");
-   System.out.print("the words are"+difficultWords);
    //to eliminate blank space at both ends
    difficultWords=difficultWords.trim();
-   
-   userID="22";
-   T_ID="1";
-   D_ID="36";
-   
 %>
     <sql:query var="rs" dataSource="jdbc/madad">
         SELECT * FROM assign_value WHERE U_ID ='<%=userID%>'
@@ -50,6 +44,11 @@
                 INSERT INTO 
                 assign_value (U_ID,D_ID,value,T_ID) 
                 VALUES ('<%=userID%>','<%=D_ID%>','<%=value%>','<%=T_ID%>');
+            </sql:update>
+            <sql:update var="rs3" dataSource="jdbc/madad">
+                INSERT INTO 
+                direct_difficult_words (U_ID,D_ID,words,T_ID) 
+                VALUES ('<%=userID%>','<%=D_ID%>','<%=difficultWords%>','<%=T_ID%>');
             </sql:update>
         </c:when>
     </c:choose>

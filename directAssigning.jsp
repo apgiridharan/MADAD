@@ -178,6 +178,7 @@ else
   <br>
         <textarea rows="4" cols="40" name="difficultWords" id="difficultWords">
         </textarea>
+  <br>
   <span>الكلمات مفصولة بفواصل</span>
   <br><br>
 <label>لقد اخترت</label>
