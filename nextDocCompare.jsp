@@ -20,6 +20,8 @@
     String T_ID = request.getParameter("ID");
     String DS_ID = request.getParameter("DS_ID");
     String value = request.getParameter("value");
+    String difficultWordsDP=request.getParameter("difficultWordsDP");
+    String difficultWordsDS=request.getParameter("difficultWordsDS");
     String str2 = ""; 
     %>
 <html>
@@ -55,8 +57,13 @@
                          (`DP_ID`, `DS_ID`, `value`, `U_ID`, `T_ID`) 
                          VALUES (‘<%=DP_ID%>’,’<%=DS_ID%>’,N'”<%=value%>”',’<%=userID%>’,’<%=T_ID%>’) ;
                      </sql:update>
+                     <sql:update var="rs3" dataSource="jdbc/madad">
+                         INSERT INTO compare_difficult_words
+                         (`DP_ID`, `DS_ID`,`DP_words`,`DS_words`,`U_ID`, `T_ID`) 
+                         VALUES (‘<%=DP_ID%>’,’<%=DS_ID%>’,N'”<%=difficultWordsDP%>”',N'”<%=difficultWordsDS%>”',’<%=userID%>’,’<%=T_ID%>’) ;
+                     </sql:update>
                  </c:otherwise>
-                     </c:choose>
+           </c:choose>
 <%
 response.sendRedirect("compareReadability.jsp?ID="+T_ID);
 %>
