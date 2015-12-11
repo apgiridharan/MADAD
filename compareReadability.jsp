@@ -198,7 +198,7 @@
 <iframe src="datasetArea.jsp?state=<%=state%>&ID='${index}'">
         </iframe>
         
-        <br>  <br>  <br>
+        <br>  <br> 
   <label>الكلمات الصعبة في النص الأول</label>
   <br>
         <textarea rows="4" cols="40" name="difficultWordsDP" id="difficultWords">
