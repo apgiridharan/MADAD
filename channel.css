@@ -1,0 +1,55 @@
+/* knexsis custom */
+td.bgimage	{background-repeat: no-repeat;}
+body {font-family: arial,helvetica; font-size: x-small; font-weight: normal;}
+table {font-family: arial,helvetica; font-size: x-small; font-weight: normal; }
+.cstd {font-size: x-small;}
+.cp1 {font-size: small;}
+.cp2 {font-size: medium;}
+.cp3 {font-size: large;}
+.cp4 {font-size: x-large;}
+.cm1 {font-size: xx-small;}
+.cm2 {font-size: 7pt;}
+.more {font-size: xx-small;font-style: italic; }
+.colorbold2 {font-size: 6pt; color: red; background: PaleGoldenRod; font-style: italic; font-weight: bold;}
+a.colorbold2:link {text-decoration: none; font-size: 6pt; color: red; background: PaleGoldenRod; font-style: italic; font-weight: bold;}
+UL { margin-left:24px; margin-top:0px; margin-bottom:2px; }
+UL UL LI {margin-left:-20px; margin-top:0.1em; }  
+.colorred {color: red;}
+.colorsilver { color: SlateGray; }
+.iscolumn {color:black; background:white}
+
+a:link {color: #116798; }
+a:active {text-decoration: blink;}
+a:hover {background: PaleGoldenRod; }
+a:visited {text-decoration: none; }
+
+.cnormal {;}
+.cred {color: red;}
+.confirm {color: red; font-weight: bold;}
+.header { background-color: #116798; font-weight: bold;}
+
+
+/* TabNavbar */
+a.tabOff {text-decoration: none; font-size: xx-small; font-weight: normal; color: white; }
+a.tabOff:hover {color: #116798; background-color: PaleGoldenRod; }
+
+a.tabOn {text-decoration: none; font-size: xx-small; font-weight: normal; color: white; }
+a.tabOn:hover {color: #116798; background-color: PaleGoldenRod; }
+a.tabOn:visited {color: black}
+td.tabLCornerOn {text-align: right; text-vertical-align: middle; }
+td.tabContentOn {text-align: center; text-vertical-align: middle; background:Gray }
+td.tabRCornerOn {text-align: left; text-vertical-align: middle; }
+td.tabLCornerOff {text-align: right; text-vertical-align: middle; }
+td.tabContentOff {text-align: center; text-vertical-align: middle; background: Gray}
+td.tabRCornerOff {text-align: left; text-vertical-align: middle; }
+
+
+/* List */
+table.listBackground {background-color: #e0e0e0; }
+.listHeader { color:white; background-color: #828282; font-family: arial,helvetica; font-weight: bold; text-align: center; }
+a.listHeader {text-decoration: underline; color: white; background-color: #828282; }
+a.listHeader:hover {text-decoration: none; color: red; }
+a.listHeader:visited {text-decoration: none; color: #116798; background-color: #D0D0D0; }
+td.listEmptyHeader {;}
+tr.listOddRow {background-color:#e0e0e0}
+tr.listEvenRow {background-color:#f0f0f0}
