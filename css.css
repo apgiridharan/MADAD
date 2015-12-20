@@ -1,0 +1,269 @@
+
+  @import url(http://fonts.googleapis.com/earlyaccess/lateef.css);
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome','lateef', sans-serif;
+}
+
+/* ---------- GENERAL ---------- */
+fieldset{
+    
+background-color: #fff;
+	-webkit-border-radius: 0 0 20px 20px;
+	-moz-border-radius: 0 0 20px 20px;
+	border-radius: 0 0 20px 20px;
+	padding: 20px 26px;
+}
+form h1{
+	background-color: #33cc77;
+	-webkit-border-radius: 20px 20px 0 0;
+	-moz-border-radius: 20px 20px 0 0;
+	border-radius: 20px 20px 0 0;
+	color: #fff;
+	font-size: 28px;
+	padding: 20px 26px;
+}
+#header-cont {
+    width:100%;
+    position:fixed;
+    top:0px;
+    left: 0px;
+}
+/*#header {
+    height:50px;
+    background:#F0F0F0;
+    border:1px solid #CCC;
+    width:960px;
+   MARGIN:0px auto;}*/
+   #header { 
+       z-index: 100;
+ color: #000000;
+ width:100%;
+ position:absolute;
+ top:0px; 
+ height: 100px;
+ background: #ffffff;
+ font-size: 30px;
+ text-align: center;
+ border-color: black;
+ left: 0px;
+}
+ .nav {
+	margin: 0px;
+	padding: 0px;
+       	position: relative;
+        background: #ffffff;
+
+
+}
+
+.nav li {
+	float: left;
+	width: 160px;
+	margin-left: 0px;
+	list-style: none;
+	padding: 0px;
+        top: 100px;
+}
+
+.nav li a {
+	background: #333;
+	color: #fff;
+	display: block;
+	padding: 7px 8px;
+	text-decoration: none;
+	border-top: 1px solid #069;
+}
+
+.nav li a:hover {
+	color: #069;
+}
+
+/*=== submenu ===*/
+
+.nav ul {
+	display: none;
+	position: absolute;
+	margin-left: 0px;
+	list-style: none;
+	padding: 0px;
+}
+
+.nav ul li {
+	width: 160px;
+	float: left;
+}
+
+.nav ul a {
+	display: block;
+	height: 15px;
+	padding: 7px 8px;
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid #222;
+}
+
+.nav ul li a:hover {
+	color: #069;
+}
+body {
+        text-align: right;	
+        background-color: #DEDEDE;
+	color: #000;
+	font-family: "Varela Round", Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	line-height: 1em;
+        color: black;
+}
+
+form {
+  max-width: 200px;
+  margin: 120px auto;
+  padding: 10px 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+position: relative;
+}
+
+h1 {
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  font-size: 16px;
+  height: 10px;
+  margin: 0;
+  outline: 0;
+  padding: 15px;
+  width: 100%;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+  margin-bottom: 20px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 4px 8px 0;
+}
+
+select {
+  padding: 6px;
+  height: 32px;
+  border-radius: 2px;
+}
+select option{
+text-align: right;
+}
+
+button {
+  padding: 19px 19px 35px 19px;
+  color: #FFF;
+  background-color: #4bc970;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  border-radius: 5px;
+  width: 3s0%;
+  border: 1px solid #3ac162;
+  border-width: 1px 1px 3px;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  margin-bottom: 20px;
+  margin-right: 40%;
+  height: 30px;
+  
+}
+
+fieldset {
+  margin-bottom: 30px;
+  border: none;
+}
+
+legend {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+label.light {
+  font-weight: 300;
+  display: inline;
+}
+
+.number {
+  background-color: #5fcf80;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 4px;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 100%;
+ 
+}
+form button[type="submit"] {
+	background-color: #33cc77;
+	color: #fff;
+	display: block;
+	margin: 0 auto;
+	padding: 4px 0;
+	width: 100px;
+
+}
+@media screen and (min-width: 480px) {
+
+  form {
+    max-width: 480px;
+  }
+
+}
+#footer { 
+ width: 100%;
+ color: #333;
+ background: #ffffff;
+ height: 40px;
+ text-align: center;
+  margin: 0px 0px 0px 0px;
+ padding: 10px;
+ position: absolute ;
+ left: 0px;
+}
+#footer p{
+     margin: 0px auto;
+}
+#content {
+    
+    position: absolute;
+    display: block;
+    top: 250px;
+    
+    
+}
