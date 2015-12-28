@@ -10,7 +10,7 @@ this page show the tasks that the user is currently working on
 <%
 Class.forName("com.mysql.jdbc.Driver");
     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/MADAD?useUnicode=true&characterEncoding=UTF-8",
-            "root", "");  
+            "root", "GiriCoder007");  
     String name = (String)session.getAttribute("userid");
 
         Statement st = con.createStatement();
@@ -20,7 +20,7 @@ Class.forName("com.mysql.jdbc.Driver");
 if(rs.next()){
      annotator_Id = Integer.parseInt(rs.getString("U_ID"));
    }
-
+annotator_Id=18;
 
 ResultSet  rs1 = st.executeQuery("select DISTINCT *  from assigned_to where U_ID='" + annotator_Id + "' and status = 'accept'");
 int[] Task_ID = new int[10];

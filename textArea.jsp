@@ -15,18 +15,10 @@
  Email: deemaazizn@outlook.com --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-        
-    </head>
-    <body>
-        </div>
+
+    <div id="textAreaDiv" class="one">
         <%   request.setCharacterEncoding("UTF-8");
             String id=request.getParameter("ID");
-
             String state = request.getParameter("state");
             if(state != null && (state.equals("empty")))
               {
@@ -84,5 +76,4 @@
 <%
             }      
 %>
-    </body>
-</html>
+    </div>

@@ -65,6 +65,7 @@
       <img src="madad.png" alt="logo" width="122" height="100" style="float:right; right:0px; top:0px;">
 
   		<ul class="nav"> <!-- this Arabic word means logout -->
+                        <li>
   				<a href="logout.jsp">تسجيل الخروج</a>
   			</li>
                         <li> <!-- this Arabic word means main page -->
@@ -196,7 +197,7 @@ else
                 </script>
         <div id="buttons">
 <!--             the button means  "quit" -->
-     <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج</button></a>
+     <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج </button></a>
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;
               &nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;
               <!--             the button means  "quit" -->
