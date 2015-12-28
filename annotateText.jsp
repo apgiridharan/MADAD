@@ -167,11 +167,11 @@
                 function annotate(){
                     var selectedText=$("textarea#textBox").val();
                     var value=$("select#annotationValue").val();
-                    var userID=$("hidden#userID").val();
-                    var datasetID=$("hidden#datasetID").val();
-                    //var colorID="color["+value+"]";
-                    var color=$("hidden#color1").val();
-                    color="red";
+                    var userID=$("#userID").val();
+                    var datasetID=$("#datasetID").val();
+                    var colorID="color"+value;
+                    var color=$('#'+colorID).val();
+                    
                     $('#myModal').modal('hide');
                     $.ajax({
                         url: "test.jsp",
@@ -182,8 +182,8 @@
                                 userID: userID,
                                 datasetID: datasetID },
                         success: function(data) {
-                            alert(data);
                              $('.one span').css('color',color);
+                             $(".one").wrapInner("<span style=\"color:\"+color></span>");
                         },
                         error: function(data) {
                            alert("annotation failed");
@@ -261,7 +261,7 @@
                 </div>
             </div>
         </div>
-    </div>          
+    </div>
              
    <% 
     String userID = (String)session.getAttribute("userid");
@@ -284,7 +284,7 @@ else
       %>
       <!-- retrieving all the related direct assigning task info. -->
       <sql:query var="rs" dataSource="jdbc/madad">
-          SELECT directAssigningFrom,directAssigningTo,Task_Name, dataset.name as dname, dataset.D_ID
+          SELECT directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
           FROM task,dataset,annotation_style 
           WHERE task.T_ID='<%=T_ID%>' 
           AND annotation_style.T_ID='<%=T_ID%>' 
@@ -305,6 +305,7 @@ else
                  <c:set var="D_Name" value = "${row.name}" />
                  <c:set var="D_ID" value = "${row.D_ID}" />
                  <c:set var="tname" value = "${row.Task_Name}" />
+                 <c:set var="levelOfAnnotation" value = "${row.Level_Of_Annoation}" />
                 </c:forEach>
             </c:when>
                 </c:choose>
@@ -313,6 +314,9 @@ else
            <input type="hidden" name="TT_ID" id="taskID" value="<%=T_ID%>">
            <input type="hidden" name="D_ID" id="datasetID" value="${D_ID}">
            <input type="hidden" id="userID" value="<%=userID%>">
+           <!-- Annotation level -->  
+           <input type="hidden" value="${levelOfAnnotation}" id="annotationLevel">
+           <iput type="hidden" id=""
           
        <h1>
             <c:out value='${tname}'/>

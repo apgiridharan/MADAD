@@ -19,9 +19,12 @@
             String value=request.getParameter("value");
             String userID=request.getParameter("userID");
             String datasetID=request.getParameter("datasetID");
-            
         %>
-        <input type="text" id="result" value="giri">
+        <input type="text" id="result" value="<%=text%>">
+        <input type="text" id="re" value="<%=value%>">
+        <input type="text" id="res" value="<%=userID%>">
+        <input type="text" id="resu" value="<%=datasetID%>">
+        
         <sql:query var="rs" dataSource="jdbc/madad">
                         SELECT token_ID FROM tokenized_words WHERE value='﻿<%=text%>';
         </sql:query> 
@@ -32,7 +35,7 @@
                             INSERT INTO annotate
                             (`U_ID`,`D_ID`,`Token_ID`,`Value`)
                             VALUES
-                            (<%=userID%>,<%=datasetID%>,${row.token_ID},'<%=value%>');
+                            ('<%=userID%>','<%=datasetID%>','${row.token_ID}','<%=value%>');
                         </sql:update>
             </c:forEach>
          </c:if>
