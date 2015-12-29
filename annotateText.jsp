@@ -183,7 +183,6 @@
                                 datasetID: datasetID },
                         success: function(data) {
                              $('.one span').css('color',color);
-                             $(".one").wrapInner("<span style=\"color:\"+color></span>");
                         },
                         error: function(data) {
                            alert("annotation failed");
