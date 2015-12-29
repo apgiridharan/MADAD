@@ -12,8 +12,8 @@
 <%-- 
     Document   : Annotate Text
     Author     : Giridharan Planisamy
-    this page enables the annotator to do the readability mode annotation (direct assigning part). 
-    Email: deemaazizn@outlook.com --%>
+    this page enables the annotator to do the schema oriented annotation. 
+    Email: apgiridharan@gmail.com --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -173,7 +173,7 @@
                     
                     $('#myModal').modal('hide');
                     $.ajax({
-                        url: "test.jsp",
+                        url: "storeAnnotationValue.jsp",
                         type: "POST",
                         cache: false,
                         data: { selectedText: selectedText, 
