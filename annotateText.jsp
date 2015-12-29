@@ -65,7 +65,7 @@
 	width: 100px;
         
 }
-  
+  span {color: green;}
      	</style>
                 
 	<script>
@@ -116,12 +116,11 @@
                                 if(hasWhiteSpace(selectedText)==false)
                                 {
                                     $('#myModal').modal('show');
-
                                 }
                                 else
                                    alert("Sorry! Please select a single word."); 
                             }//Sentance level annotation
-                            else if(annotationLevel==new String("sentance"))
+                            else if(annotationLevel==new String("sentence"))
                             {
                                 if(moreSentance(selectedText)==true)
                                 {
@@ -129,7 +128,7 @@
 
                                 }
                                 else
-                                   alert("Sorry! Please select a full sentance");
+                                   alert("Sorry! Please select a full sentence");
                             }  
                             else
                                 alert("Sorry! Its document level annotation");
@@ -182,7 +181,18 @@
                                 userID: userID,
                                 datasetID: datasetID },
                         success: function(data) {
-                             $('.one span').css('color',color);
+                            var selection = getSelectedText();
+                            var selection_text = selection.toString();
+
+                            // How do I add a span around the selected text?
+
+                            var span = document.createElement('SPAN');
+                            span.textContent = selection_text;
+                            span.className=color;
+                            span.style.color=color;
+                            var range = selection.getRangeAt(0);
+                            range.deleteContents();
+                            range.insertNode(span);
                         },
                         error: function(data) {
                            alert("annotation failed");
@@ -190,6 +200,12 @@
                     })
                    
                 }
+                
+                function getSelectedText() {
+                t = (document.all) ? document.selection.createRange().text : document.getSelection();
+
+                return t;
+              }
                
         </script>
     </head>
@@ -315,7 +331,6 @@ else
            <input type="hidden" id="userID" value="<%=userID%>">
            <!-- Annotation level -->  
            <input type="hidden" value="${levelOfAnnotation}" id="annotationLevel">
-           <iput type="hidden" id=""
           
        <h1>
             <c:out value='${tname}'/>
