@@ -6,19 +6,21 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="java.sql.Blob"%>
+<%@page import="org.iwan.madad.utils.Annotator"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%-- 
- Document   : datasetArea
- Author     : Deema Alnuhait
- this page displays the corpus to be used in other readability annotation pages.  
- Email: deemaazizn@outlook.com --%>
+ Document   : textArea
+ Author     : Giridharan
+ this page displays the corpus to be used in schema oriented annotation pages.  
+ Email: apgiridharan@gmail.com.com --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     <div id="textAreaDiv" class="one">
         <%   request.setCharacterEncoding("UTF-8");
-            String id=request.getParameter("ID");
+            String datasetID=request.getParameter("ID");
+            String userID=request.getParameter("userID");
             String state = request.getParameter("state");
             if(state != null && (state.equals("empty")))
               {
@@ -29,7 +31,7 @@
               else {
         %>
 <sql:query var="rs" dataSource="jdbc/madad">
- select * from dataset where D_ID = '<%=id%>';
+ select * from dataset where D_ID = '<%=datasetID%>';
 </sql:query> 
  <c:choose>
         <c:when test="${rs.rowCount > 0}">
@@ -40,7 +42,7 @@
                  byte[ ] fileData = null ;
                  DataSource ds = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/madad");
              Connection con = ds.getConnection(); 
-                  String sql =  "select * from dataset where D_ID = "+id;
+                  String sql =  "select * from dataset where D_ID = "+datasetID;
                Statement myStatement = con.createStatement();
                 ResultSet rs=myStatement.executeQuery(sql);
                 rs.next();
@@ -49,13 +51,24 @@
                       fileData = file.getBytes(1,(int)file.length());
                               response.setContentLength(fileData.length);
                 String ff = new String (fileData,StandardCharsets.UTF_8);
+                
                 %>
                 <label dir="rtl">
                                 <%
- out.print(ff);
- %>
-     
-
+                                    int d_ID=Integer.parseInt(datasetID);
+                                    int u_ID=Integer.parseInt(request.getParameter("userID"));
+                                    Annotator anno=new Annotator(d_ID);
+                                    
+                                    //If the corpus is already annotated by the current annotator
+                                    if(anno.isAnnotatedByUser(u_ID)){
+                                        out.println("Its aleready annotated");
+                                      out.print(anno.getAnnotatedText()); 
+                                    }
+                                    else{//If the corpus is not annotated by the current user
+                                        out.print(anno.getCorpus());
+                                        out.println("Its not aleready annotated");
+                                    }
+                                %>
                 </label>
 
  <%

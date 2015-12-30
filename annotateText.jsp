@@ -65,8 +65,7 @@
 	width: 100px;
         
 }
-  span {color: green;}
-     	</style>
+ </style>
                 
 	<script>
             var selectedText;
@@ -75,6 +74,8 @@
                      //It will load the next or previous dataset in the textArea div
                      function loadNextText(){
 			var xmlhttp;
+                        var userID=document.getElementById("userID").value;
+                        var datasetID=document.getElementById("datasetID").value;
 			document.getElementById("textAreaDiv").innerHTML = "";
 			if (window.XMLHttpRequest) {
 				xmlhttp = new XMLHttpRequest();
@@ -86,7 +87,7 @@
 			document.getElementById("textAreaDiv").innerHTML = xmlhttp.responseText;
 			}
 			}
-			xmlhttp.open("GET", "textArea.jsp?ID=36", true);
+			xmlhttp.open("GET", "textArea.jsp?ID="+datasetID+"&userID="+userID, true);
 			xmlhttp.send();
                     }
                     
@@ -203,7 +204,6 @@
                 
                 function getSelectedText() {
                 t = (document.all) ? document.selection.createRange().text : document.getSelection();
-
                 return t;
               }
                
@@ -229,9 +229,6 @@
     </header>
   </div>
              
-     <!-- Annotation level -->  
-     <input type="hidden" value="word" id="annotationLevel">
-     
     <!-- Modal HTML -->
     <div id="myModal" class="modal fade">
         <div class="modal-dialog">
@@ -325,7 +322,7 @@ else
             </c:when>
                 </c:choose>
 
-      <form method="post" action="directAssigningDB.jsp" name="form_list">
+      <form method="post" action="" name="form_list">
            <input type="hidden" name="TT_ID" id="taskID" value="<%=T_ID%>">
            <input type="hidden" name="D_ID" id="datasetID" value="${D_ID}">
            <input type="hidden" id="userID" value="<%=userID%>">
@@ -342,10 +339,17 @@ else
                    <script type="text/javascript">
                         loadNextText();
                     </script>
-              </div>    
-  
-  <br>
-  <br><br>
+              </div> 
+
+              <br><br>
+              
+              <!--Prgress Bar to show the time taken by the annotator to do the annotation task -->
+              <div class="progress">
+                    <div id="time" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                    aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                      40%
+              </div>
+</div>
 
         <div id="buttons">
 <!--             the button means  "quit" -->
