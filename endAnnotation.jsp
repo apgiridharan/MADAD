@@ -9,6 +9,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="java.sql.Blob"%>
+<%@page import="org.iwan.madad.utils.Dataset"%>
 <%-- 
     Document   : Annotate Text
     Author     : Giridharan Planisamy
@@ -72,7 +73,7 @@
             var value;
             
                      //It will load the next or previous dataset in the textArea div
-                     function loadNextText(){
+                     function loadNextText(id){
 			var xmlhttp;
                         var userID=document.getElementById("userID").value;
                         var datasetID=document.getElementById("datasetID").value;
@@ -268,14 +269,13 @@
              
    <% 
     String userID = (String)session.getAttribute("userid");
-    
+    session.setAttribute("userid",userID);
     request.setCharacterEncoding("UTF8");
     String T_ID = request.getParameter("ID");
     String state = request.getParameter("state");
     userID="18";
     T_ID="1";
-    session.setAttribute("userid",userID);
-  
+    Dataset dataset=new Dataset();
 if(state != null && state.equals("done"))
 {%>
 <script> // this alert means "has been assigned"
@@ -289,7 +289,7 @@ else
       %>
       <!-- retrieving all the related direct assigning task info. -->
       <sql:query var="rs" dataSource="jdbc/madad">
-          SELECT directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
+          SELECT Guidelines,directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
           FROM task,dataset,annotation_style 
           WHERE task.T_ID='<%=T_ID%>' 
           AND annotation_style.T_ID='<%=T_ID%>' 
@@ -311,10 +311,11 @@ else
                  <c:set var="D_ID" value = "${row.D_ID}" />
                  <c:set var="tname" value = "${row.Task_Name}" />
                  <c:set var="levelOfAnnotation" value = "${row.Level_Of_Annoation}" />
+                 <c:set var="guideLines" value="${row.Guidelines}" />
                 </c:forEach>
             </c:when>
                 </c:choose>
-
+         
       <form method="post" action="" name="form_list">
            <input type="hidden" name="TT_ID" id="taskID" value="<%=T_ID%>">
            <input type="hidden" name="D_ID" id="datasetID" value="${D_ID}">
@@ -322,31 +323,46 @@ else
            <!-- Annotation level -->  
            <input type="hidden" value="${levelOfAnnotation}" id="annotationLevel">
           
-       <h1>
-            <c:out value='${tname}'/>
-       </h1>
+                <h1>
+                     <c:out value='${tname}'/>
+                </h1>
+       
               <h2>
                    <c:out value='${D_Name}'/> 
-              </h2> 
-                <%
-              out.println("The user ID<h1>"+session.getAttribute("userid") +"</h1>");
-                %>
+              </h2>
+              <%
+                session.setAttribute("datasetID",pageContext.getAttribute("D_ID"));
+                int datasetID=Integer.parseInt(pageContext.getAttribute("D_ID").toString());
+                dataset.setId(datasetID);
+                dataset.setFiles(datasetID);
+                int firstFileID=dataset.getFirstFileID();
+               %>
+               <input type="text" id="currentFileID" value="<%=firstFileID%>" />
               <div id="textAreaDiv" class="one" >
+              <input type="hidden" id="currentFile" />
                    <script type="text/javascript">
-                        loadNextText();
+                        loadNextText(1);
                     </script>
               </div> 
-
-              <br><br>
-              
-              <!--Prgress Bar to show the time taken by the annotator to do the annotation task -->
-              <div class="progress">
+              <br>
+              <h2>
+                  نسبة النص المشروح
+              </h2>
+              <div class="progress" style="width:50%;" align="left">
                     <div id="time" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
                     aria-valuemin="0" aria-valuemax="100" style="width:40%">
                       40%
-              </div>
-</div>
-
+                    </div>
+                </div>
+              <h2>
+                   توجيهات
+              </h2>
+              <textarea id="guideLines" rows="100" style="min-height:100px;" readonly>
+              ${guideLines}
+              </textarea>
+              <br><br>
+              <br>
+              
         <div id="buttons">
 <!--             the button means  "quit" -->
      <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج </button></a>
