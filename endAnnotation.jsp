@@ -73,10 +73,11 @@
             var value;
             
                      //It will load the next or previous dataset in the textArea div
-                     function loadNextText(id){
+                     function loadNextText(){
 			var xmlhttp;
                         var userID=document.getElementById("userID").value;
                         var datasetID=document.getElementById("datasetID").value;
+                        var fileID=document.getElementById("currentFileID").value
 			document.getElementById("textAreaDiv").innerHTML = "";
 			if (window.XMLHttpRequest) {
 				xmlhttp = new XMLHttpRequest();
@@ -88,7 +89,7 @@
 			document.getElementById("textAreaDiv").innerHTML = xmlhttp.responseText;
 			}
 			}
-			xmlhttp.open("GET", "textArea.jsp?ID="+datasetID+"&userID="+userID, true);
+			xmlhttp.open("GET", "fileContentDiv.jsp?fileID="+fileID+"&ID="+datasetID+"&userID="+userID, true);
 			xmlhttp.send();
                     }
                     
@@ -120,7 +121,7 @@
                                     $('#myModal').modal('show');
                                 }
                                 else
-                                   alert("Sorry! Please select a single word."); 
+                                   alert("آسف! يرجى اختيار كلمة واحدة."); 
                             }//Sentance level annotation
                             else if(annotationLevel==new String("sentence"))
                             {
@@ -130,7 +131,7 @@
 
                                 }
                                 else
-                                   alert("Sorry! Please select a full sentence");
+                                   alert("آسف! يرجى تحديد جملة كاملة.");
                             }  
                             else
                                 alert("Sorry! Its document level annotation");
@@ -336,12 +337,13 @@ else
                 dataset.setId(datasetID);
                 dataset.setFiles(datasetID);
                 int firstFileID=dataset.getFirstFileID();
+
                %>
-               <input type="text" id="currentFileID" value="<%=firstFileID%>" />
+               
               <div id="textAreaDiv" class="one" >
-              <input type="hidden" id="currentFile" />
+              <input type="hidden" id="currentFileID" value="<%=firstFileID%>" />
                    <script type="text/javascript">
-                        loadNextText(1);
+                        loadNextText();
                     </script>
               </div> 
               <br>
