@@ -328,9 +328,7 @@ else
               <h2>
                    <c:out value='${D_Name}'/> 
               </h2> 
-                <%
-              out.println("The user ID<h1>"+session.getAttribute("userid") +"</h1>");
-                %>
+                
               <div id="textAreaDiv" class="one" >
                    <script type="text/javascript">
                         loadNextText();

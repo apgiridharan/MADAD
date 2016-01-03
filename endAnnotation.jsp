@@ -73,11 +73,11 @@
             var value;
             
                      //It will load the next or previous dataset in the textArea div
-                     function loadNextText(){
+                     function loadNextText(requestFor){
 			var xmlhttp;
                         var userID=document.getElementById("userID").value;
                         var datasetID=document.getElementById("datasetID").value;
-                        var fileID=document.getElementById("currentFileID").value
+                        var fileID=document.getElementById("currentFileID").value;
 			document.getElementById("textAreaDiv").innerHTML = "";
 			if (window.XMLHttpRequest) {
 				xmlhttp = new XMLHttpRequest();
@@ -89,7 +89,7 @@
 			document.getElementById("textAreaDiv").innerHTML = xmlhttp.responseText;
 			}
 			}
-			xmlhttp.open("GET", "fileContentDiv.jsp?fileID="+fileID+"&ID="+datasetID+"&userID="+userID, true);
+			xmlhttp.open("GET", "fileContentDiv.jsp?fileID="+fileID+"&ID="+datasetID+"&requestFor="+requestFor, true);
 			xmlhttp.send();
                     }
                     
@@ -106,10 +106,10 @@
                     $('div.one').mouseup( function() {
                         var mytext = selectHTML();
                         var selectedText=mytext.toString();
+                        document.getElementById("selectedText").value=selectedText;
                         selectedText=selectedText.replace("<span>","");
                         selectedText=selectedText.replace("</span>","");
                         selectedText=selectedText.trim();
-                        document.getElementById('textBox').value=selectedText;
                         var annotationLevel=document.getElementById("annotationLevel").value.toString();
                         if(selectedText.length>1)
                         {
@@ -208,7 +208,78 @@
                 t = (document.all) ? document.selection.createRange().text : document.getSelection();
                 return t;
               }
+              
+              function showConflicts()
+              {
+                  $('#conflicts').modal('show');
+              }
+              
+              function loadConflicts(tokenID)
+              {
+                  var xmlhttp;
+                        document.getElementById("editMessage").innerHTML = "";
+			document.getElementById("confilictValues").innerHTML = "";
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			} else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById("confilictValues").innerHTML = xmlhttp.responseText;
+			}
+			}
+			xmlhttp.open("GET", "conflictsOnText.jsp?tokenID="+tokenID, true);
+			xmlhttp.send();
+              }
+              
                
+              function editAnnotation()
+              {
+                  var tokenID=document.getElementById("tokenID").value;
+                  var annotationValue=document.getElementById("annotationValue").value;
+                  var xmlhttp;
+                        
+			document.getElementById("editMessage").innerHTML = "";
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			} else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById("editMessage").innerHTML = xmlhttp.responseText;
+			}
+			}
+			xmlhttp.open("GET", "editAnnotation.jsp?tokenID="+tokenID+"&annotationValue="+annotationValue, true);
+			xmlhttp.send();
+                        loadConflicts(tokenID);
+              }
+              
+              function loadAnnotationSet(annotatorID)
+              {
+                  alert("Annotator ID is:"+annotatorID);
+                  var xmlhttp;
+			document.getElementById("annotationSet").innerHTML = "";
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			} else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById("annotationSet").innerHTML = xmlhttp.responseText;
+			}
+			}
+			xmlhttp.open("GET", "annotationSet.jsp?annotatorID="+annotatorID, true);
+			xmlhttp.send();
+              }
+              function showAnnotatedSets()
+              {
+                  $('#sets').modal('show');
+              }
+              
+              
         </script>
     </head>
     <body>
@@ -229,26 +300,33 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">
-                        قيمة الشرح
+                       القيم المعينة
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <lable>النص المحدد</lable>
-                    <textarea id="textBox" rows="100" style="min-height:100px;" readonly>
-                    </textarea>
+                    <input type="hidden" id="selectedText"/>
+                    <sql:query var="rs" dataSource="jdbc/madad">
+                        SELECT * FROM annotator;
+                    </sql:query>
+                        <lable>المفسرين</lable>
+                        <select id="annotatorID" name="annotatorID" onchange="loadAnnotationSet(this.value)">
+                            <option value="">select Annotator</option>
+                        <c:if test="${rs.rowCount > 0}">
+                            <c:forEach var="row" items="${rs.rows}">                   
+                                <option value="${row.A_ID}">${row.Name}</option>
+                            </c:forEach>
+                        </c:if>
+                       </select>
                     <br>
                     <sql:query var="rs" dataSource="jdbc/madad">
                         SELECT * FROM annotation_value;
                     </sql:query> 
-                    <lable>ميزات</lable>
-                    <select id="annotationValue">
-                        <option value="">Select value</option>
+                    <lable>قائمة الميزات</lable><br>
                             <c:if test="${rs.rowCount > 0}">
                                 <c:forEach var="row" items="${rs.rows}">                   
-                                 <option value="${row.AV_ID}">${row.Value}</option>
+                                    <input type="radio" id="features" name="features" value="${row.AV_ID}">${row.Value}<br>
                                 </c:forEach>
                             </c:if>
-                    </select>
                     <sql:query var="rs1" dataSource="jdbc/madad">
                         SELECT * FROM annotation_value;
                     </sql:query> 
@@ -262,7 +340,8 @@
                            
                 </div>
                 <div class="modal-footer">
-                     <button type="button" onclick="annotate();" class="btn-success"> علق</button>
+                    <button type="button" class="btn btn-danger" onclick="showConflicts()">الصراعات</button>
+                    <button type="button" class="btn btn-success" onclick="showAnnotatedSets()">مجموعات الشرح</button>
                 </div>
             </div>
         </div>
@@ -332,18 +411,17 @@ else
                    <c:out value='${D_Name}'/> 
               </h2>
               <%
-                session.setAttribute("datasetID",pageContext.getAttribute("D_ID"));
                 int datasetID=Integer.parseInt(pageContext.getAttribute("D_ID").toString());
                 dataset.setId(datasetID);
                 dataset.setFiles(datasetID);
                 int firstFileID=dataset.getFirstFileID();
-
+                dataset.setCurrentFileID(firstFileID);
+                session.setAttribute("dataset", dataset);
                %>
-               
+               <input type="hidden" id="currentFileID" value="<%=firstFileID%>" />
               <div id="textAreaDiv" class="one" >
-              <input type="hidden" id="currentFileID" value="<%=firstFileID%>" />
                    <script type="text/javascript">
-                        loadNextText();
+                        loadNextText("currentFile");
                     </script>
               </div> 
               <br>
@@ -367,11 +445,11 @@ else
               
         <div id="buttons">
 <!--             the button means  "quit" -->
-     <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج </button></a>
+     <button style="display: inline" type="button" onclick="loadNextText('previousFile')">خروج </button>
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;
               &nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;
               <!--             the button means  "quit" -->
-             <a href="#" style="text-decoration: none;" onclick="document.form_list.submit();" ><button style="display: inline" type="button">إسناد</button></a>
+             <button style="display: inline" type="button" onclick="loadNextText('nextFile')">إسناد</button>
                &nbsp;  &nbsp; &nbsp;
              <!--<a href="#" onclick="//document.formName.submit();">-->
              </div>
@@ -382,10 +460,90 @@ else
 });
 </script>
 </form>
-                <div id="footer">
-<p><small>Copyright by KSU &copy2015. All rights reserved.</small></p>
-</div>
+              
+              
+    <!-- Modal For Annotation conflicts  -->
+    <div id="conflicts" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">
+                       الصراعات على النص
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <%
+                        Dataset dataset1=(Dataset)session.getAttribute("dataset");
+                        int currentFileID=dataset1.getCurrentFileID();
+                    %>
+                    
+                    <sql:query var="rs" dataSource="jdbc/madad">
+                        SELECT tokens.Value, tokens.T_ID FROM annotate_token,tokens,annotator,annotation_value 
+                        WHERE annotate_token.T_ID=tokens.T_ID and annotation_value.AV_ID=annotate_token.AV_ID and
+                        annotate_token.A_ID=annotator.A_ID and f_ID=<%=currentFileID%>;
+                     </sql:query>
+                     <lable>نص</lable>
+                     <select id="tokenID" name="tokenID" onchange="loadConflicts(this.value);">
+                         <option value="">select Token</option>
+                         <c:if test="${rs.rowCount > 0}">
+                              <c:forEach var="row" items="${rs.rows}">                   
+                                 <option value="${row.T_ID}">${row.value}</option>
+                              </c:forEach>
+                        </c:if>
+                     </select><div id="editMessage"></div>
+                    <br>
+                    <div id="confilictValues">
+                       Select Text to view the conflicts 
+                    </div>
+                    <br>
+                    <sql:query var="rs" dataSource="jdbc/madad">
+                        SELECT * FROM annotation_value;
+                    </sql:query> 
+                    <lable>ميزات</lable>
+                    <select id="annotationValue" name="annotationValue">
+                        <option value="">Select value</option>
+                            <c:if test="${rs.rowCount > 0}">
+                                <c:forEach var="row" items="${rs.rows}">                   
+                                 <option value="${row.AV_ID}">${row.Value}</option>
+                                </c:forEach>
+                            </c:if>
+                    </select>
+                    <button type="button" onclick="editAnnotation();" class="btn-success"> تحرير</button>
+                </div>
+                <div class="modal-footer">
+                     
+                </div>
             </div>
+        </div>
+    </div>
+                    
+     <!-- Modal For Annotation Sets  -->
+    <div id="sets" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">
+                        الشرح الذي حدده الحواشي
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div id="annotationSet">
+                     Sorry! Please select the annotator.   
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="editAnnotation();" class="btn-success">حسنا</button>   
+                </div>
+            </div>
+        </div>
+    </div>               
+     
+                <div id="footer">
+                <p><small>Copyright by KSU &copy2015. All rights reserved.</small></p>
+                </div>
+      </div>
       
     </body>
 </html>

@@ -19,26 +19,35 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     <div id="textAreaDiv" class="one">
-        <%   request.setCharacterEncoding("UTF-8");
+        <%  request.setCharacterEncoding("UTF-8");
             String datasetID=request.getParameter("ID");
-            String userID=request.getParameter("userID");
             String fileID=request.getParameter("fileID");
             String state = request.getParameter("state");
-            if(state != null && (state.equals("empty")))
-              {
-                  //          means there is no other text to compare with 
-                      out.print("لا توجد نصوص أخرى لمقارنتها");
-                  
-              }
-              else {
-        
+            String requestFor=(String)request.getParameter("requestFor");
+            Dataset dataset=(Dataset)session.getAttribute("dataset");
+            if(requestFor.equals("currentFile"))
+            {
+            
                 out.println("<label dir=\"rtl\">");
                 File file=new File();
                 int nFileID=Integer.parseInt(fileID);
                 out.print(file.getContent(nFileID));
                 out.println("</label>");
-
- 
-            }      
+             }
+             else if(requestFor.equals("nextFile")){
+                 out.println("<label dir=\"rtl\">");
+                 out.print(dataset.getNextFileContent());
+                 out.print("this is next file");
+                 out.println("</label>");
+             }
+             else
+             {
+                out.println("<label dir=\"rtl\">");
+                 out.print(dataset.getPreviousFileContent());
+                 out.print("this is previous file");
+                 out.println("</label>");
+             }
+                 
+   
 %>
     </div>
