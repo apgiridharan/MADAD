@@ -204,16 +204,19 @@
                    
                 }
                 
+                //Get selected text
                 function getSelectedText() {
                 t = (document.all) ? document.selection.createRange().text : document.getSelection();
                 return t;
               }
               
+              //Show model for conflicts on the text
               function showConflicts()
               {
                   $('#conflicts').modal('show');
               }
               
+              //Load conflicts in the model
               function loadConflicts(tokenID)
               {
                   var xmlhttp;
@@ -233,7 +236,7 @@
 			xmlhttp.send();
               }
               
-               
+              //Edit the annotation value for the token which is has conflict 
               function editAnnotation()
               {
                   var tokenID=document.getElementById("tokenID").value;
@@ -256,6 +259,7 @@
                         loadConflicts(tokenID);
               }
               
+              //Load the annotation set provided by the annotator
               function loadAnnotationSet(annotatorID)
               {
                   var xmlhttp;
@@ -274,15 +278,17 @@
 			xmlhttp.send();
               }
               
+              //show the annotation sets model
               function showAnnotatedSets()
               {
                   $('#sets').modal('show');
               }
+              //close annotation set model
               function closeAnnotationSet()
               {
                   $('#sets').modal('hide');
               }
-              
+              //Edit anotation value provided by the annotator for the document
               function editAnnotationSet(tokenID,annotationValue)
               {
                   var tokenDiv="tokenDiv"+tokenID;
