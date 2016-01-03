@@ -258,7 +258,6 @@
               
               function loadAnnotationSet(annotatorID)
               {
-                  alert("Annotator ID is:"+annotatorID);
                   var xmlhttp;
 			document.getElementById("annotationSet").innerHTML = "";
 			if (window.XMLHttpRequest) {
@@ -274,9 +273,36 @@
 			xmlhttp.open("GET", "annotationSet.jsp?annotatorID="+annotatorID, true);
 			xmlhttp.send();
               }
+              
               function showAnnotatedSets()
               {
                   $('#sets').modal('show');
+              }
+              function closeAnnotationSet()
+              {
+                  $('#sets').modal('hide');
+              }
+              
+              function editAnnotationSet(tokenID,annotationValue)
+              {
+                  var tokenDiv="tokenDiv"+tokenID;
+                  var annotatorID=document.getElementById("annotatorID").value;
+                  var xmlhttp;
+			document.getElementById(tokenDiv).innerHTML = "";
+                        
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			} else {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.getElementById(tokenDiv).innerHTML = xmlhttp.responseText;
+			}
+			}
+			xmlhttp.open("GET", "editAnnotation.jsp?annotatorID="+annotatorID+"&tokenID="+tokenID+"&annotationValue="+annotationValue, true);
+			xmlhttp.send();
+                        
               }
               
               
@@ -309,7 +335,7 @@
                         SELECT * FROM annotator;
                     </sql:query>
                         <lable>المفسرين</lable>
-                        <select id="annotatorID" name="annotatorID" onchange="loadAnnotationSet(this.value)">
+                        <select id="annotatorID" name="annotatorID" onchange="loadAnnotationSet(this.value);">
                             <option value="">select Annotator</option>
                         <c:if test="${rs.rowCount > 0}">
                             <c:forEach var="row" items="${rs.rows}">                   
@@ -529,12 +555,12 @@ else
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <div id="annotationSet">
+                       <div id="annotationSet">
                      Sorry! Please select the annotator.   
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="editAnnotation();" class="btn-success">حسنا</button>   
+                    <button type="button" onclick="closeAnnotationSet();" class="btn-success">حسنا</button>   
                 </div>
             </div>
         </div>

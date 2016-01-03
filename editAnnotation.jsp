@@ -18,11 +18,34 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<div id="editMessage">
+
     <%
         int tokenID=Integer.parseInt(request.getParameter("tokenID").toString());
         int valueID=Integer.parseInt(request.getParameter("annotationValue").toString());
+        if(request.getParameter("annotatorID")!=null)
+        {
+           int annotatorID=Integer.parseInt(request.getParameter("annotatorID").toString()); 
+           %>
+           <div id="tokenDiv<%=tokenID%>">
+                <sql:update var="rs" dataSource="jdbc/madad">
+                    UPDATE annotate_token SET AV_ID=<%=valueID%>
+                    WHERE T_ID=<%=tokenID%> and A_ID=<%=annotatorID%>;
+                 </sql:update>
+                <c:choose>
+                    <c:when test="${rs>0}" >
+                        <span style="font-family: wingdings; font-size: 200%; color:green;">&#10004;</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span style="font-family: wingdings; font-size: 200%; color:red;">&#10006;</span>
+                    </c:otherwise>
+                </c:choose>
+           </div>
+           <%
+        }
+        else
+       {
     %>
+    <div id="editMessage">
    <sql:update var="rs" dataSource="jdbc/madad">
        UPDATE annotate_token SET AV_ID=<%=valueID%>
        WHERE T_ID=<%=tokenID%>;
@@ -36,3 +59,4 @@
            </c:otherwise>
        </c:choose>
 </div>
+<%}%>

@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,7 +10,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="java.sql.Blob"%>
-<%@page import="org.iwan.madad.utils.Dataset"%>
+<%@page import="org.iwan.madad.utils.*"%>
 
 <%-- 
     Document   : Annotate Text
@@ -24,7 +25,9 @@
         Dataset data=(Dataset)session.getAttribute("dataset");
         int currentFileID=data.getCurrentFileID();
         int userID=Integer.parseInt(request.getParameter("annotatorID").toString());
-        out.print(userID+" "+currentFileID);
+        Schema schema=new Schema();
+        ArrayList<Schema> list=schema.getSchemaList();
+        int listSize=list.size();
     %>
    <sql:query var="rs" dataSource="jdbc/madad">
        SELECT annotator.Name,annotation_value.Value,tokens.value,tokens.T_ID FROM annotate_token,tokens,annotator,annotation_value 
@@ -35,15 +38,34 @@
        <tr>
            <th>نص</th>
            <th>القيمة</th>
-           <th>تحرير</th>
+           <th colspan="2">تحرير</th>
        </tr>
-       ${rs.rowCount}
        <c:if test="${rs.rowCount > 0}">
            <c:forEach var="row" items="${rs.rows}">
                <tr>
                    <td>${row.value}</td>
                    <td>${row.Value}</td>
-                   <td></td>
+                   <td>
+                       <div width="80%">
+                         <select onchange="editAnnotationSet(${row.T_ID},this.value);">
+                                    <option value="">change value</option>
+                           <%
+                            for(int i=0;i<listSize;i++)
+                            {
+                                Schema schema1=new Schema();
+                                schema1=list.get(i);
+                                %>
+                                <option value="<%=schema1.getId()%>"><%=schema1.getValue()%></option>
+                                 <%   
+                            }
+                            %>
+                         </select>
+                         </div>   
+                   </td>
+                   <td>
+                    <div id="tokenDiv${row.T_ID}">
+                    </div></td>
+                   
                </tr>
            </c:forEach>
        </c:if>
