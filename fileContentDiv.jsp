@@ -36,14 +36,17 @@
              }
              else if(requestFor.equals("nextFile")){
                  out.println("<label dir=\"rtl\">");
-                 out.print(dataset.getNextFileContent());
+                 String content=dataset.getNextFileContent();
+                 System.out.println(content);
+                 out.print(content);
                  out.print("this is next file");
                  out.println("</label>");
              }
-             else
+             else if(requestFor.equals("previousFile"))
              {
                 out.println("<label dir=\"rtl\">");
-                 out.print(dataset.getPreviousFileContent());
+                String content=dataset.getPreviousFileContent();
+                out.print(content);
                  out.print("this is previous file");
                  out.println("</label>");
              }
