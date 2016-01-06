@@ -44,7 +44,7 @@
          <form>          
              <%
     InitialContext ctx = new InitialContext();
-    DataSource ds = (DataSource) new InitialContext().lookup("jdbc/madad");
+    DataSource ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/madad");
     Connection conn = null;
     Statement stmt = null;
     conn = ds.getConnection();
@@ -57,7 +57,6 @@
   String instit = null;
   if(rs.next())
   {
-  out.print("select * from manager where Name=N'"+userID+"'");
   name = rs.getString("Name");
   age = rs.getString("Age");
   e_l =  rs.getString("Education_Level");
@@ -118,8 +117,9 @@
     <a href="#"  >إنشاء مهمة جديدة</a><br>
     <a href="manageTask.jsp"  >المهام المدارة</a><br>
     <a href="assignAnnotationTask.jsp"  >تعيين مرمزين لمهمة تحشية</a><br>
-    <a href="#"  >معاينة التقدم لمهمة</a><br>
- <a href="generateReport.jsp"  >التقرير الشهري</a><br>
+    <a href="taskList.jsp">معاينة التقدم لمهمة</a><br>
+    <a href="generateReport.jsp">التقرير الشهري</a><br>
+    <a href="listOfDatasets.jsp">تصدير المشروح كوربوس</a><br>
 </fieldset>
 
 </form>

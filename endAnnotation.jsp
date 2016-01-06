@@ -383,10 +383,10 @@
     String userID = (String)session.getAttribute("userid");
     session.setAttribute("userid",userID);
     request.setCharacterEncoding("UTF8");
-    String T_ID = request.getParameter("ID");
+    String taskID = request.getParameter("ID");
     String state = request.getParameter("state");
     userID="18";
-    T_ID="1";
+    taskID="1";
     Dataset dataset=new Dataset();
 if(state != null && state.equals("done"))
 {%>
@@ -403,8 +403,8 @@ else
       <sql:query var="rs" dataSource="jdbc/madad">
           SELECT Guidelines,directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
           FROM task,dataset,annotation_style 
-          WHERE task.T_ID='<%=T_ID%>' 
-          AND annotation_style.T_ID='<%=T_ID%>' 
+          WHERE task.ta_ID='<%=taskID%>' 
+          AND annotation_style.ta_ID='<%=taskID%>' 
           AND annotation_style.D_ID = dataset.D_ID;
       </sql:query>  
           
@@ -429,7 +429,7 @@ else
                 </c:choose>
          
       <form method="post" action="" name="form_list">
-           <input type="hidden" name="TT_ID" id="taskID" value="<%=T_ID%>">
+           <input type="hidden" name="TT_ID" id="taskID" value="<%=taskID%>">
            <input type="hidden" name="D_ID" id="datasetID" value="${D_ID}">
            <input type="hidden" id="userID" value="<%=userID%>">
            <!-- Annotation level -->  
