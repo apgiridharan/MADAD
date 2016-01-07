@@ -58,5 +58,5 @@
                <span style="font-family: wingdings; font-size: 200%; color:red;">&#10006;</span>
            </c:otherwise>
        </c:choose>
-</div>
+    </div>
 <%}%>

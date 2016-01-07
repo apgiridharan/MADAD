@@ -20,37 +20,45 @@
 
     <div id="textAreaDiv" class="one">
         <%  request.setCharacterEncoding("UTF-8");
-            String datasetID=request.getParameter("ID");
             String fileID=request.getParameter("fileID");
-            String state = request.getParameter("state");
             String requestFor=(String)request.getParameter("requestFor");
             Dataset dataset=(Dataset)session.getAttribute("dataset");
+            int annotatorID=Integer.parseInt(session.getAttribute("userID").toString());
+            Annotator annotator=new Annotator();
             if(requestFor.equals("currentFile"))
             {
             
                 out.println("<label dir=\"rtl\">");
                 File file=new File();
                 int nFileID=Integer.parseInt(fileID);
-                out.print(file.getContent(nFileID));
+                String fileContent=file.getContent(nFileID);
+                out.print(annotator.getAnnotatedText(fileContent,annotatorID));
                 out.println("</label>");
              }
              else if(requestFor.equals("nextFile")){
                  out.println("<label dir=\"rtl\">");
                  String content=dataset.getNextFileContent();
-                 System.out.println(content);
-                 out.print(content);
-                 out.print("this is next file");
+                 out.print(annotator.getAnnotatedText(content,annotatorID));
                  out.println("</label>");
              }
              else if(requestFor.equals("previousFile"))
              {
                 out.println("<label dir=\"rtl\">");
                 String content=dataset.getPreviousFileContent();
-                out.print(content);
-                 out.print("this is previous file");
-                 out.println("</label>");
+                out.print(annotator.getAnnotatedText(content,annotatorID));
+                out.println("</label>");
              }
-                 
-   
+              
 %>
+
+    <br>
+              <h2>
+                  نسبة النص المشروح
+              </h2>
+              <div class="progress" style="width:50%;" align="right">
+                    <div id="time" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                    aria-valuemin="0" aria-valuemax="100" style="width:<%=dataset.getProgress()%>%">
+                      <%=dataset.getProgress() %>%
+                    </div>
+                </div>
     </div>

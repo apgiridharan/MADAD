@@ -1,3 +1,4 @@
+<%@page import="org.iwan.madad.utils.Dataset"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -72,10 +73,11 @@
             var value;
             
                      //It will load the next or previous dataset in the textArea div
-                     function loadNextText(){
+                     function loadNextText(requestFor){
 			var xmlhttp;
                         var userID=document.getElementById("userID").value;
                         var datasetID=document.getElementById("datasetID").value;
+                        var fileID=document.getElementById("currentFileID").value;
 			document.getElementById("textAreaDiv").innerHTML = "";
 			if (window.XMLHttpRequest) {
 				xmlhttp = new XMLHttpRequest();
@@ -87,7 +89,7 @@
 			document.getElementById("textAreaDiv").innerHTML = xmlhttp.responseText;
 			}
 			}
-			xmlhttp.open("GET", "textArea.jsp?ID="+datasetID+"&userID="+userID, true);
+			xmlhttp.open("GET", "fileContentDiv.jsp?fileID="+fileID+"&ID="+datasetID+"&requestFor="+requestFor, true);
 			xmlhttp.send();
                     }
                     
@@ -270,11 +272,12 @@
     String userID = (String)session.getAttribute("userid");
     
     request.setCharacterEncoding("UTF8");
-    String T_ID = request.getParameter("ID");
+    String taskID = request.getParameter("ID");
     String state = request.getParameter("state");
     userID="18";
-    T_ID="1";
-    session.setAttribute("userid",userID);
+    taskID="1";
+    Dataset dataset=new Dataset();
+    session.setAttribute("userID",userID);
   
 if(state != null && state.equals("done"))
 {%>
@@ -289,10 +292,10 @@ else
       %>
       <!-- retrieving all the related direct assigning task info. -->
       <sql:query var="rs" dataSource="jdbc/madad">
-          SELECT directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
+          SELECT Guidelines,directAssigningFrom,directAssigningTo,Task_Name,Level_Of_Annoation, dataset.name as dname, dataset.D_ID
           FROM task,dataset,annotation_style 
-          WHERE task.T_ID='<%=T_ID%>' 
-          AND annotation_style.T_ID='<%=T_ID%>' 
+          WHERE task.ta_ID='<%=taskID%>' 
+          AND annotation_style.ta_ID='<%=taskID%>' 
           AND annotation_style.D_ID = dataset.D_ID;
       </sql:query>  
           
@@ -311,47 +314,56 @@ else
                  <c:set var="D_ID" value = "${row.D_ID}" />
                  <c:set var="tname" value = "${row.Task_Name}" />
                  <c:set var="levelOfAnnotation" value = "${row.Level_Of_Annoation}" />
+                 <c:set var="guideLines" value="${row.Guidelines}" />
                 </c:forEach>
             </c:when>
                 </c:choose>
 
       <form method="post" action="" name="form_list">
-           <input type="hidden" name="TT_ID" id="taskID" value="<%=T_ID%>">
+           <input type="hidden" name="TT_ID" id="taskID" value="<%=taskID%>">
            <input type="hidden" name="D_ID" id="datasetID" value="${D_ID}">
            <input type="hidden" id="userID" value="<%=userID%>">
            <!-- Annotation level -->  
            <input type="hidden" value="${levelOfAnnotation}" id="annotationLevel">
           
-       <h1>
-            <c:out value='${tname}'/>
-       </h1>
+                <h1>
+                     <c:out value='${tname}'/>
+                </h1>
               <h2>
                    <c:out value='${D_Name}'/> 
               </h2> 
-                
+               <%
+                int datasetID=Integer.parseInt(pageContext.getAttribute("D_ID").toString());
+                dataset.setId(datasetID);
+                dataset.setFiles();
+                int firstFileID=dataset.getFirstFileID();
+                dataset.setCurrentFileID(firstFileID);
+                int numberOfFiles=dataset.getNumberOfFiles();
+                session.setAttribute("dataset", dataset);
+               %> 
+               <input type="hidden" id="currentFileID" value="<%=firstFileID%>" />
+               <input type="hidden" id="numberOfFiles" value="<%=numberOfFiles%>" />
               <div id="textAreaDiv" class="one" >
                    <script type="text/javascript">
-                        loadNextText();
+                        loadNextText("currentFile");
                     </script>
-              </div> 
-
-              <br><br>
-              
-              <!--Prgress Bar to show the time taken by the annotator to do the annotation task -->
-              <div class="progress">
-                    <div id="time" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                    aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                      40%
               </div>
-</div>
+              <h2>
+                   توجيهات
+              </h2>
+              <textarea id="guideLines" rows="100" style="min-height:100px;" readonly>
+              ${guideLines}
+              </textarea>
+              <br><br>
+              <br>
 
         <div id="buttons">
 <!--             the button means  "quit" -->
-     <a style="text-decoration: none;" href ="javascript:history.back()" target="_top" ><button style="display: inline" type="button">خروج </button></a>
+     <button style="display: inline" type="button" onclick="loadNextText('previousFile')">خروج </button>
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;
               &nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;
               <!--             the button means  "quit" -->
-             <a href="#" style="text-decoration: none;" onclick="document.form_list.submit();" ><button style="display: inline" type="button">إسناد</button></a>
+             <button style="display: inline" type="button" onclick="loadNextText('nextFile')">إسناد</button>
                &nbsp;  &nbsp; &nbsp;
              <!--<a href="#" onclick="//document.formName.submit();">-->
              </div>

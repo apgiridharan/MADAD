@@ -11,7 +11,7 @@
 <%@page import="java.sql.Blob"%>
 <%@page import="org.iwan.madad.utils.Dataset"%>
 <%-- 
-    Document   : Annotate Text
+    Document   : endAnnotation
     Author     : Giridharan Planisamy
     this page enables the annotator to do the schema oriented annotation. 
     Email: apgiridharan@gmail.com --%>
@@ -71,7 +71,6 @@
 	<script>
             var selectedText;
             var value;
-            
                      //It will load the next or previous dataset in the textArea div
                      function loadNextText(requestFor){
 			var xmlhttp;
@@ -381,12 +380,12 @@
              
    <% 
     String userID = (String)session.getAttribute("userid");
-    session.setAttribute("userid",userID);
     request.setCharacterEncoding("UTF8");
     String taskID = request.getParameter("ID");
     String state = request.getParameter("state");
     userID="18";
     taskID="1";
+    session.setAttribute("userID",userID);
     Dataset dataset=new Dataset();
 if(state != null && state.equals("done"))
 {%>
@@ -445,27 +444,20 @@ else
               <%
                 int datasetID=Integer.parseInt(pageContext.getAttribute("D_ID").toString());
                 dataset.setId(datasetID);
-                dataset.setFiles(datasetID);
+                dataset.setFiles();
                 int firstFileID=dataset.getFirstFileID();
                 dataset.setCurrentFileID(firstFileID);
+                int numberOfFiles=dataset.getNumberOfFiles();
                 session.setAttribute("dataset", dataset);
                %>
                <input type="hidden" id="currentFileID" value="<%=firstFileID%>" />
+               <input type="hidden" id="numberOfFiles" value="<%=numberOfFiles%>" />
               <div id="textAreaDiv" class="one" >
                    <script type="text/javascript">
                         loadNextText("currentFile");
                     </script>
               </div> 
-              <br>
-              <h2>
-                  نسبة النص المشروح
-              </h2>
-              <div class="progress" style="width:50%;" align="left">
-                    <div id="time" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                    aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                      40%
-                    </div>
-                </div>
+              
               <h2>
                    توجيهات
               </h2>
@@ -511,7 +503,7 @@ else
                     %>
                     
                     <sql:query var="rs" dataSource="jdbc/madad">
-                        SELECT tokens.Value, tokens.T_ID FROM annotate_token,tokens,annotator,annotation_value 
+                        SELECT DISTINCT tokens.Value, tokens.T_ID FROM annotate_token,tokens,annotator,annotation_value 
                         WHERE annotate_token.T_ID=tokens.T_ID and annotation_value.AV_ID=annotate_token.AV_ID and
                         annotate_token.A_ID=annotator.A_ID and f_ID=<%=currentFileID%>;
                      </sql:query>

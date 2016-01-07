@@ -19,7 +19,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<div id="confilictValues">
+<div id="confilictValues" align="center">
     <%
         int tokenID=Integer.parseInt(request.getParameter("tokenID").toString());
     %>
@@ -29,7 +29,7 @@
        annotate_token.A_ID=annotator.A_ID and annotate_token.T_ID=<%=tokenID%>;
     </sql:query>
    <table BORDER=2 width="400">
-       <tr>
+       <tr align="center">
            <th>اسم الحواشي</th>
            <th>القيمة</th>
        </tr>

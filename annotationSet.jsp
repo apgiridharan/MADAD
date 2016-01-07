@@ -34,7 +34,7 @@
        WHERE annotate_token.T_ID=tokens.T_ID and annotation_value.AV_ID=annotate_token.AV_ID and
        annotate_token.A_ID=annotator.A_ID and tokens.f_ID=<%=currentFileID%> and annotate_token.A_ID=<%=userID%>;
     </sql:query>
-   <table BORDER=2 width="400">
+   <table BORDER=2 width="400" align="center">
        <tr>
            <th>نص</th>
            <th>القيمة</th>
@@ -43,8 +43,8 @@
        <c:if test="${rs.rowCount > 0}">
            <c:forEach var="row" items="${rs.rows}">
                <tr>
-                   <td>${row.value}</td>
-                   <td>${row.Value}</td>
+                   <th>${row.value}</th>
+                   <th>${row.Value}</th>
                    <td>
                        <div width="80%">
                          <select onchange="editAnnotationSet(${row.T_ID},this.value);">
