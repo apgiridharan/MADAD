@@ -1,3 +1,9 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="javax.sql.DataSource"%>
+<%@page import="javax.naming.Context"%>
+<%@page import="javax.naming.InitialContext"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%-- 
@@ -38,7 +44,29 @@ select Name, Password from admin where Name= ? and Password= ?
 
    <c:choose>
 <c:when test="${result1.rowCount != 0}">
-<% session.setAttribute("userid", userid);
+<% 
+try {
+                Context initContext = new InitialContext();
+                Context envContext = (Context) initContext.lookup("java:comp/env");
+                DataSource ds = (DataSource) envContext.lookup("jdbc/madad");
+                //DataSource ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/madad");
+                Connection con = ds.getConnection();
+                String query="SELECT * FROM annotator WHERE Name='"+userid+"' and Password='"+pwd+"'";
+                Statement myStatement = con.createStatement();
+                ResultSet rs=myStatement.executeQuery(query);
+                
+                if(rs.next())
+                {
+                   session.setAttribute("annotatorID",rs.getInt("A_ID"));
+                }
+               
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+session.setAttribute("userid", userid);
 type = "annotator";
 String email = (String)pageContext.getAttribute("email");
 session.setAttribute("userid", userid);    

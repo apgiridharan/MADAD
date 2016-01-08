@@ -4,23 +4,24 @@
     Author     : Aysha Al-Mahmoud
 this page shows the available tasks so the user can choose to apply for 
 --%>
+<%@page import="javax.sql.DataSource"%>
+<%@page import="javax.naming.Context"%>
+<%@page import="javax.naming.InitialContext"%>
 <%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
-Class.forName("com.mysql.jdbc.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/MADAD?useUnicode=true&characterEncoding=UTF-8",
-            "root", "");  
+    Context initContext = new InitialContext();
+    Context envContext = (Context) initContext.lookup("java:comp/env");
+    DataSource ds = (DataSource) envContext.lookup("jdbc/madad");
+                //DataSource ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/madad");
+    Connection con = ds.getConnection();
     String name = (String)session.getAttribute("userid");
-
-        Statement st = con.createStatement();
+    Statement st=con.createStatement();
         
-   ResultSet  rs = st.executeQuery("select U_ID from annotator where Name='" + name + "'");
-     int annotator_Id =0;
-if(rs.next()){
-     annotator_Id = Integer.parseInt(rs.getString("U_ID"));
-   }
-int [] Task_ID = new int[10];
+     int annotator_Id =Integer.parseInt(session.getAttribute("annotatorID").toString());
+
+    int [] Task_ID = new int[10];
    String[] Task_Name = new String[10];
    String[] Description = new String[10];
 
@@ -28,9 +29,9 @@ int [] Task_ID = new int[10];
   int counter=0;
   
   ResultSet rs2 = null;
-    rs2 = st.executeQuery("select t.T_ID, Task_Name, Description from task AS t where Max_Num_Of_Annotators > (Select count(*) As count1 from assigned_to AS a where status = 'accept'AND t.T_ID = a.T_ID) AND t.T_ID NOT IN (select T_ID  from assigned_to where U_ID='" + annotator_Id + "' and status = 'accept') ");
+    rs2 = st.executeQuery("select ta_ID, Task_Name, Description from task AS t where Max_Num_Of_Annotators > (Select count(*) As count1 from assigned_to AS a where status = 'accept' AND t.ta_ID = a.ta_ID) AND t.ta_ID NOT IN (select ta_ID  from assigned_to where A_ID=" + annotator_Id + " and status = 'accept') ");
     while(rs2.next()){
-  Task_ID[counter] = Integer.parseInt(rs2.getString("t.T_ID"));
+  Task_ID[counter] = rs2.getInt("ta_ID");
   Task_Name[counter] = rs2.getString("Task_Name");
   Description[counter] = rs2.getString("Description");
   counter++;
