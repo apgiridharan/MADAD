@@ -37,14 +37,14 @@
              }
              else if(requestFor.equals("nextFile")){
                  out.println("<label dir=\"rtl\">");
-                 String content=dataset.getNextFileContent();
+                 String content=dataset.getNextFileContent(annotatorID);
                  out.print(annotator.getAnnotatedText(content,annotatorID));
                  out.println("</label>");
              }
              else if(requestFor.equals("previousFile"))
              {
                 out.println("<label dir=\"rtl\">");
-                String content=dataset.getPreviousFileContent();
+                String content=dataset.getPreviousFileContent(annotatorID);
                 out.print(annotator.getAnnotatedText(content,annotatorID));
                 out.println("</label>");
              }
