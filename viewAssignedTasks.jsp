@@ -169,18 +169,28 @@ text-align: center;
             <h2 style="text-align: right;"><span class="fontawesome-lock"></span>المهام المسندة</h2>
             <form method="post" action="sendMessage.jsp">
             <fieldset  style="text-align: right;">
+                <div align="center">
+                <table border="1" align="center" width="90%">
+                    <tr>
+                        <th>S.No</th>
+                        <th>اسم المهمة</th>
+                        <th>الوصف</th>
+                    </tr>
                 <% for(int k=0; k<Task_ID.length; k++){
               if ((Task_Name[k] != null)&& (Description[k] != null)){%>
-              <label style="text-align: right;" >(<%=k+1%></label><br>
-              <label style="text-align: right;" >اسم المهمة:</label>
-                 <label  style="text-align: right;"><%=Task_Name[k]%></label> <br>
-                   <label style="text-align: right;" >وصف المهمة:</label> 
-                      <label  style="text-align: right;"><%=Description[k]%></label>
+              <tr align="center">
+                  <td><label style="text-align: right;" ><%=k+1%></label></td>
+                  <td><a href="gotoTask.jsp?taskID=<%=Task_ID[k]%>" color="green"><%=Task_Name[k]%></a></td>
+                  <td><label  style="text-align: right;"><%=Description[k]%></label></td>
+                </tr>
                               <br><br><br>
 
-                        <%}}
-                 if (Task_ID[0] == 0)
+                        <%}}%>
+                 </table>
+                 
+                <% if (Task_ID[0] == 0)
                         {out.println("لا يوجد لديك مهام مسندة");}%>
+                </div>     
         <br><br><br><br><br><br>
 
   </fieldset>

@@ -269,13 +269,11 @@
     </div>
              
    <% 
-    String userID = (String)session.getAttribute("userid");
-    
+    String userName = (String)session.getAttribute("userid");
+    int userID=Integer.parseInt(session.getAttribute("annotatorID").toString());
     request.setCharacterEncoding("UTF8");
-    String taskID = request.getParameter("ID");
+    String taskID = request.getParameter("taskID").toString();
     String state = request.getParameter("state");
-    userID="18";
-    taskID="1";
     Dataset dataset=new Dataset();
     session.setAttribute("userID",userID);
   

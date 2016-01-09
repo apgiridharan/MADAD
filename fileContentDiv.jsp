@@ -19,6 +19,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     <div id="textAreaDiv" class="one">
+        <fieldset  style="text-align: right;">
         <%  request.setCharacterEncoding("UTF-8");
             String fileID=request.getParameter("fileID");
             String requestFor=(String)request.getParameter("requestFor");
@@ -35,22 +36,24 @@
                 out.print(annotator.getAnnotatedText(fileContent,annotatorID));
                 out.println("</label>");
              }
-             else if(requestFor.equals("nextFile")){
+             if(requestFor.equals("nextFile")){
                  out.println("<label dir=\"rtl\">");
                  String content=dataset.getNextFileContent(annotatorID);
+                 System.out.println(content);
                  out.print(annotator.getAnnotatedText(content,annotatorID));
                  out.println("</label>");
              }
-             else if(requestFor.equals("previousFile"))
+             if(requestFor.equals("previousFile"))
              {
                 out.println("<label dir=\"rtl\">");
                 String content=dataset.getPreviousFileContent(annotatorID);
+                System.out.println(content);
                 out.print(annotator.getAnnotatedText(content,annotatorID));
                 out.println("</label>");
              }
               
 %>
-
+</fieldset>
     <br>
               <h2>
                   نسبة النص المشروح
